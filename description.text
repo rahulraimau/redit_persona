@@ -487,12 +487,6 @@ Personality Traits:
 
 ---
 
-### Tips for Beginners
-- **Python Basics**: The script uses lists (`[]`), dictionaries (`{}`), loops (`for`), and functions (`def`). If these are new, try a Python tutorial like Codecademy or W3Schools.
-- **Reddit API**: Think of it like a library card that lets the script borrow Reddit data. You need to sign up for it first.
-- **Editing the Script**: Use a text editor like VS Code to change the script. Be careful not to delete quotes (`"`) or commas (`,`).
-- **Output File**: Check the `reddit_personas` folder after running the script to find the results.
 
-If you have questions or get stuck, feel free to ask for help!
 
 ---
