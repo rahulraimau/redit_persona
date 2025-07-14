@@ -1,0 +1,175 @@
+def analyze_content(posts, comments):
+    persona = {
+        'interests': [],
+        'personality_traits': [],
+        'expertise_level': [],
+        'demographics': [],
+        'engagement_style': []
+    }
+    citations = []
+    all_content = [(item, 'post') for item in posts] + [(item, 'comment') for item in comments]
+    subreddits = set(item[0]['subreddit'] for item in all_content)
+    for subreddit in subreddits:
+        related_items = [(item[0]['permalink'], item[1]) for item in all_content if item[0]['subreddit'] == subreddit]
+        persona['interests'].append(f"Active in r/{subreddit}")
+        citations.append({
+            'characteristic': f"Interest: Active in r/{subreddit}",
+            'references': [item[0] for item in related_items],
+            'type': 'subreddit'
+        })
+    for item, item_type in all_content:
+        text = item['body'] if item['body'] else item.get('title', '')
+        if not text:
+            continue
+        blob = TextBlob(text)
+        sentiment = blob.sentiment.polarity
+        if sentiment > 0.2:
+            trait = "Positive tone"
+        elif sentiment < -0.2:
+            trait = "Critical or negative tone"
+        else:
+            trait = "Neutral tone"
+        if trait not in persona['personality_traits']:
+            persona['personality_traits'].append(trait)
+            citations.append({
+                'characteristic': f"Personality: {trait}",
+                'references': [item['permalink']],
+                'type': item_type
+            })
+    for item, item_type in all_content:
+        text = item['body'] if item['body'] else item.get('title', '')
+        if not text:
+            continue
+        word_count = len(text.split())
+        technical_terms = len(re.findall(r'\b(technical|expert|advanced|specialized)\b', text, re.IGNORECASE))
+        if word_count > 100 or technical_terms > 0:
+            level = f"Knowledgeable in r/{item['subreddit']}"
+            if level not in persona['expertise_level']:
+                persona['expertise_level'].append(level)
+                citations.append({
+                    'characteristic': f"Expertise: {level}",
+                    'references': [item['permalink']],
+                    'type': item_type
+                })
+    total_items = len(all_content)
+    avg_score = sum(item[0]['score'] for item in all_content) / total_items if total_items > 0 else 0
+    if total_items > 30:
+        style = "Highly active contributor"
+    elif total_items > 10:
+        style = "Moderately active contributor"
+    else:
+        style = "Occasional contributor"
+    persona['engagement_style'].append(style)
+    citations.append({
+        'characteristic': f"Engagement: {style}",
+        'references': [item[0]['permalink'] for item in all_content[:5]],
+        'type': 'aggregate'
+    })
+    for item, item_type in all_content:
+        text = item['body'] if item['body'] else item.get('title', '')
+        if re.search(r"\b(I am|I'm)\s(a|an)\s(\w+)", text, re.IGNORECASE):
+            match = re.search(r"\b(I am|I'm)\s(a|an)\s(\w+)", text, re.IGNORECASE).group(3)
+            persona['demographics'].append(f"Self-identified as {match}")
+            citations.append({
+                'characteristic': f"Demographic: Self-identified as {match}",
+                'references': [item['permalink']],
+                'type': item_type
+            })
+    return persona, citations
+
+
+    Step 1: Set Up Persona and Citations
+
+
+
+
+
+Lines 2–9: Creates a persona dictionary with five empty lists for storing user details: interests (e.g., subreddits they post in), personality_traits (e.g., positive tone), expertise_level (e.g., knowledgeable in a topic), demographics (e.g., self-identified as a programmer), and engagement_style (e.g., how active they are). Also creates an empty citations list to track which posts/comments support each detail.
+
+
+
+Why: This sets up a place to store the user’s persona and evidence.
+
+Step 2: Combine Posts and Comments
+
+
+
+
+
+Line 10: Combines posts and comments into one list called all_content, marking each item as a “post” or “comment.” For example, a post might be labeled (post_data, 'post').
+
+
+
+Why: This makes it easier to analyze both posts and comments together.
+
+Step 3: Find Interests Based on Subreddits
+
+
+
+
+
+Lines 11–16: Gets a list of unique subreddits (e.g., r/Python) from all posts/comments. For each subreddit, adds “Active in r/subreddit” to the interests list and saves the URLs of related posts/comments in citations.
+
+
+
+Why: Posting in a subreddit shows what topics the user cares about.
+
+Step 4: Analyze Personality (Tone of Posts/Comments)
+
+
+
+
+
+Lines 17–31: Loops through each post/comment, gets its text (body for comments, body or title for posts), and skips if there’s no text. Uses TextBlob to check the tone (sentiment score: -1 to 1). Labels text as “Positive tone” (>0.2), “Critical or negative tone” (<-0.2), or “Neutral tone” (else). Adds unique tones to personality_traits and cites the post/comment.
+
+
+
+Why: The tone of someone’s writing hints at their personality (e.g., cheerful or critical).
+
+Step 5: Check Expertise Level
+
+
+
+
+
+Lines 32–41: Loops again, gets text, and skips empty ones. Counts words and looks for terms like “technical” or “expert.” If the text is long (>100 words) or has technical terms, marks the user as “Knowledgeable” in that subreddit and cites the post/comment.
+
+
+
+Why: Long or technical posts suggest the user knows a lot about a topic.
+
+Step 6: Determine Engagement Style
+
+
+
+
+
+Lines 42–52: Counts total posts/comments. If there are more than 30, labels the user “Highly active”; 11–30, “Moderately active”; 10 or fewer, “Occasional.” Adds this to engagement_style and cites up to 5 posts/comments.
+
+
+
+Why: How many posts/comments someone makes shows how active they are on Reddit.
+
+Step 7: Identify Demographics
+
+
+
+
+
+Lines 53–59: Loops through posts/comments, looking for phrases like “I am a programmer” or “I’m an engineer.” If found, adds the word (e.g., “programmer”) to demographics and cites the post/comment.
+
+
+
+Why: Users sometimes share personal details like their job or role, giving clues about who they are.
+
+Step 8: Return Results
+
+
+
+
+
+Line 60: Returns the completed persona dictionary and citations list to be used by other parts of the script (e.g., to save to a file).
+
+
+
+Why: This sends the user’s persona and evidence back for further processing.
