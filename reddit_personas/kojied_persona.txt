@@ -1,0 +1,56 @@
+User Persona for Reddit User: kojied
+==================================================
+
+Interests:
+- Active in r/GenZ
+- Active in r/Frugal
+- Active in r/Webull
+- Active in r/aivideo
+- Active in r/options
+- Active in r/LeopardsAteMyFace
+- Active in r/teenagers
+- Active in r/China_Flu
+- Active in r/RooCode
+- Active in r/ChatGPTJailbreak
+- Active in r/stocks
+- Active in r/ManorLords
+- Active in r/newyorkcity
+- Active in r/AskReddit
+- Active in r/wallstreetbets
+- Active in r/warriors
+- Active in r/FoodNYC
+- Active in r/ChatGPT
+- Active in r/civ5
+- Active in r/projectzomboid
+- Active in r/ClimateOffensive
+- Active in r/VisionPro
+- Active in r/AskNYC
+- Active in r/OptimistsUnite
+- Active in r/plantclinic
+- Active in r/NYCbike
+- Active in r/nycrail
+- Active in r/Lyft
+- Active in r/OnePiece
+- Active in r/nba
+- Active in r/NFT
+- Active in r/visionosdev
+- Active in r/Conservative
+
+Personality Traits:
+- Neutral tone
+- Positive tone
+- Critical or negative tone
+
+Expertise Level:
+- Knowledgeable in r/newyorkcity
+- Knowledgeable in r/VisionPro
+- Knowledgeable in r/OnePiece
+- Knowledgeable in r/ClimateOffensive
+- Knowledgeable in r/Frugal
+- Knowledgeable in r/NFT
+- Knowledgeable in r/civ5
+- Knowledgeable in r/warriors
+
+Engagement Style:
+- Highly active contributor
+
